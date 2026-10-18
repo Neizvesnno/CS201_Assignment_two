@@ -1,36 +1,31 @@
 import random
 
 words = ['apple', 'bread', 'candy', 'dream', 'eagle', 'flame', 'grape', 'house', 'input', 'joker']
-x = random.random()
-y = x * len(words)
-z = int(y)
-secret_word = words[z]
-
+secret_word = random.choice(words)
 tries = 6
-wl = len(secret_word)
-w = secret_word
+secret_word_len = len(secret_word)
 
 print("Welcome to Wordle!")
-print("Guess the", wl, "-letter word. You have", tries, "tries.")
+print("Guess the", secret_word_len, "-letter word. You have", tries, "tries.")
 
 while tries != 0:
     guess = input("Attempt " + str(7 - tries) + "/6 – Enter guess: ").lower()
 
-    if len(guess) != wl:
-        print("Wrong length. Expected", wl)
+    if len(guess) != secret_word_len:
+        print("Wrong length. Expected", secret_word_len)
         continue
 
-    if guess == w:
+    if guess == secret_word:
         print("You win!!!")
         break
 
     result = [];
     i = 0
-    while i < wl:
+    while i < secret_word_len:
         ch = guess[i]
-        if ch == w[i]:
+        if ch == secret_word[i]:
             result.append('correct')
-        elif ch in w:
+        elif ch in secret_word:
             result.append('present')
         else:
             result.append('absent')
@@ -38,7 +33,7 @@ while tries != 0:
 
     display = []
     j = 0
-    while j < wl:
+    while j < secret_word_len:
         s = guess[j]
         res = result[j]
         if res == 'correct':
