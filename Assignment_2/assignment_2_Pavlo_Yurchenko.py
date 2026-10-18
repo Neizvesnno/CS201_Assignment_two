@@ -1,52 +1,60 @@
 import random
 
-words = ['apple', 'bread', 'candy', 'dream', 'eagle', 'flame', 'grape', 'house', 'input', 'joker']
-secret_word = random.choice(words)
-tries = 6
-secret_word_len = len(secret_word)
+def random_word(arr):
+    return random.choice(arr)
 
-print("Welcome to Wordle!")
-print("Guess the", secret_word_len, "-letter word. You have", tries, "tries.")
 
-while tries != 0:
-    guess = input("Attempt " + str(7 - tries) + "/6 – Enter guess: ").lower()
 
-    if len(guess) != secret_word_len:
-        print("Wrong length. Expected", secret_word_len)
-        continue
+# while tries != 0:
+#     guess = input("Attempt " + str(7 - tries) + "/6 – Enter guess: ").lower()
+#
+#     if len(guess) != secret_word_len:
+#         print("Wrong length. Expected", secret_word_len)
+#         continue
+#
+#     if guess == secret_word:
+#         print("You win!!!")
+#         break
+#
+#     result = [];
+#     i = 0
+#     while i < secret_word_len:
+#         ch = guess[i]
+#         if ch == secret_word[i]:
+#             result.append('correct')
+#         elif ch in secret_word:
+#             result.append('present')
+#         else:
+#             result.append('absent')
+#         i += 1
+#
+#     display = []
+#     j = 0
+#     while j < secret_word_len:
+#         s = guess[j]
+#         res = result[j]
+#         if res == 'correct':
+#             display.append("[" + s.upper() + "]")
+#         elif res == 'present':
+#             display.append("(" + s + ")")
+#         else:
+#             display.append(" " + s + " ")
+#         j += 1
+#
+#     junk = ''.join([c for c in display if c])
+#     print("Result:", ' '.join(display))
+#     tries = tries - 1
+# else:
+#     final = secret_word
+#     print("You lose! The word was:", final)
 
-    if guess == secret_word:
-        print("You win!!!")
-        break
+if __name__ == "__main__":
+    words = ['apple', 'bread', 'candy', 'dream', 'eagle', 'flame', 'grape', 'house', 'input', 'joker']
+    secret_word = random_word(words)
+    tries = 6
+    secret_word_len = len(secret_word)
 
-    result = [];
-    i = 0
-    while i < secret_word_len:
-        ch = guess[i]
-        if ch == secret_word[i]:
-            result.append('correct')
-        elif ch in secret_word:
-            result.append('present')
-        else:
-            result.append('absent')
-        i += 1
+    print("Welcome to Wordle!")
+    print(f"Guess the {secret_word_len}-letter word. You have {tries} tries.")
 
-    display = []
-    j = 0
-    while j < secret_word_len:
-        s = guess[j]
-        res = result[j]
-        if res == 'correct':
-            display.append("[" + s.upper() + "]")
-        elif res == 'present':
-            display.append("(" + s + ")")
-        else:
-            display.append(" " + s + " ")
-        j += 1
-
-    junk = ''.join([c for c in display if c])
-    print("Result:", ' '.join(display))
-    tries = tries - 1
-else:
-    final = secret_word
-    print("You lose! The word was:", final)
+    #далі через try-except зробити перевірку вводу користувача
