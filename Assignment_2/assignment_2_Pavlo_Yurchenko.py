@@ -1,10 +1,13 @@
 import random
 
-def random_word(arr):
-    return random.choice(arr)
+WORDS = ['apple', 'bread', 'candy', 'dream', 'eagle', 'flame', 'grape', 'house', 'input', 'joker']
+MAX_TRIES = 6
 
-def get_guess(word_len, to_def_attempt):
-    try_guess = input(f"Attempt {to_def_attempt}/6 – Enter guess: ").strip().lower()
+def random_word():
+    return random.choice(WORDS)
+
+def get_guess(word_len, attempt):
+    try_guess = input(f"Attempt {attempt}/{MAX_TRIES} – Enter guess: ").strip().lower()
 
     if not try_guess:
         raise ValueError("Empty input, please enter a word.")
@@ -15,78 +18,94 @@ def get_guess(word_len, to_def_attempt):
 
     return try_guess
 
-def check_guess(to_def_secret_word, to_def_guess):
-    if to_def_secret_word == to_def_guess:
-        return True
+def check_guess(secret_word, guess):
+    return secret_word == guess
 
-    return False
-
-def guess_revision(to_def_secret_word_len, to_def_guess):
+def guess_revision(secret_word, guess):
     result = []
-    for i in range(to_def_secret_word_len):
-        symbol = to_def_guess[i]
+    for i in range(len(secret_word)):
+        symbol = guess[i]
         if symbol == secret_word[i]:
-            result.append("[" + symbol.upper() + "]")
+            result.append(f"[{symbol}]")
         elif symbol in secret_word:
-            result.append("(" + symbol + ")")
+            result.append(f"({symbol})")
         else:
-            result.append(" " + symbol + " ")
+            result.append(symbol)
 
-    print(''.join([c for c in result if c]))
+    print(' '.join(result))
 
-def play_round(to_def_attempt: int):
+def correct_guess_check(secret_word_len, attempt):
     while True:
-        while True:
-            try:
-                guess = get_guess(secret_word_len, to_def_attempt)
-                break
-            except ValueError as e:
-                print(e)
-            except (EOFError, KeyboardInterrupt):
-                print("\nGame interrupted.")
-                raise SystemExit
+        try:
+            return get_guess(secret_word_len, attempt)
+        except ValueError as e:
+            print(e)
+        except (EOFError, KeyboardInterrupt):
+            print("\nGame interrupted.")
+            raise SystemExit
+
+def play_round():
+    secret_word = random_word()
+    secret_word_len = len(secret_word)
+    print(f"Guess the {secret_word_len}-letter word. You have {MAX_TRIES} tries.")
+
+    attempt = 1
+
+    while True:
+        guess = correct_guess_check(secret_word_len, attempt)
 
         if check_guess(secret_word, guess):
             print("You win!!!")
             break
 
-        guess_revision(secret_word_len, guess)
+        guess_revision(secret_word, guess)
 
-        to_def_attempt += 1
-        if to_def_attempt > 6:
+        attempt += 1
+        if attempt > MAX_TRIES:
             print(f"You lose! The word was: {secret_word}")
             break
 
-
-if __name__ == "__main__":
-    words = ['apple', 'bread', 'candy', 'dream', 'eagle', 'flame', 'grape', 'house', 'input', 'joker']
-    attempt = 1
-
-    print("Welcome to Wordle!")
-
-    secret_word = random_word(words)
-    secret_word_len = len(secret_word)
-    print(f"Guess the {secret_word_len}-letter word. You have 6 tries.")
-
-    play_round(attempt)
-
+def restart_game():
     while True:
         try:
-            restart = str(input("Do you want to restart? (y/n): ")).strip().lower()
+            try_restart = str(input("Do you want to restart? (y/n): ")).strip().lower()
         except (EOFError, KeyboardInterrupt):
             print("\nGame interrupted.")
             raise SystemExit
 
+        if try_restart == "y" or try_restart == "n":
+            return try_restart
+        else:
+            print("Invalid input, please enter 'y' or 'n'.")
+
+if __name__ == "__main__":
+    print("Welcome to Wordle!")
+
+    while True:
+        play_round()
+
+        restart = restart_game()
+
         if restart == "y":
             print("Game will be restarted.")
-
-            secret_word = random_word(words)
-            secret_word_len = len(secret_word)
-            print(f"Guess the {secret_word_len}-letter word. You have 6 tries.")
-
-            play_round(attempt)
         elif restart == "n":
             print("Have a good day!")
             break
-        else:
-            print("Invalid input, please enter 'y' or 'n'.")
+
+"""
+====================================================================
+REFLECTION
+====================================================================
+
+Напишіть тут коротку рефлексію після завершення роботи.
+
+1. Що саме ви змінили?
+
+
+2. Чому нова структура коду краща?
+
+
+3. Що ще можна було б додати, змінити або покращити?
+
+
+"""
